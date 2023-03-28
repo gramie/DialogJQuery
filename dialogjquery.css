@@ -1,0 +1,98 @@
+#overall-container {
+  display: flex;
+  gap: 30px;
+}
+
+#dialog-container {
+  position: relative;
+  display: flex;
+  gap: 40px;
+}
+
+.responses {
+}
+.response {
+  width: 20em;
+}
+.response-title {
+  text-align: center;
+  font-weight: bold;
+  border-bottom: 1px dotted gray;
+}
+
+.response-line:nth-child(odd) {
+  background-color:#EEE
+}
+
+.response {
+  border: 3px solid gray;
+}
+
+.response.selected {
+  border: 3px dotted blue;
+}
+
+.response.computer {
+  margin-left: 15em;
+}
+
+.responses-speaker {
+  margin-bottom: 10px;
+}
+
+/* Property Editor */
+#property-editor {
+  font-family: arial, sans-serif;
+  font-size: 110%;
+}
+
+#property-editor .row {
+  display: grid;
+  grid-template-columns: 5em 21em;
+}
+
+#property-editor .label {
+  font-weight: bold;
+}
+
+#property-editor .row > div {
+  border: 1px solid gray;
+}
+
+#property-editor .line-connections {
+  display: flex;
+  justify-content: space-between;
+}
+
+#property-editor .connection-button.add {
+  align-self: flex-end;
+}
+
+#property-editor .line-properties {
+  border: 1px dotted grey;
+  padding: 4px;
+}
+
+.line-properties:nth-child(odd) {
+    background-color: #eee;
+}
+
+#property-editor input, #property-editor select {
+  width: 95%;
+}
+
+#property-editor .changed-property {
+  border: 2px solid green;
+}
+
+#property-editor .add-line {
+  text-align: center;
+}
+
+#response-picker {
+  display: none;
+}
+
+.connection-button-delete {
+  color: red;
+}
