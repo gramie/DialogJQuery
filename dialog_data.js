@@ -33,7 +33,7 @@ const lines = {
     audio_filename: "",
     translation: "Je peux vous aider a quelque chose?",
     connections: [3]
-  }
+  },
   3: {
     text: "This is good.",
     audio_filename: "",
@@ -45,18 +45,17 @@ const lines = {
     audio_filename: "",
     translation: "Je voudrais ouvrir une compte.",
     connections: [4]
-  }
+  },
   5: {
     text: "I am somewhere here.",
     audio_filename: "",
     translation: "Je suis autre part.",
     connections: []
-  }
+  },
   6: {
     text: "Here is the form to fill out.",
     audio_filename: "",
     translation: "Voici la form a remplir.",
     connections: []
   }
-
-]
+}        ;

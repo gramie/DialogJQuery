@@ -1,7 +1,7 @@
 class Conversation {
   constructor(responseData, lineData, dialog) {
     this.data = {};
-    this.parseData(responseData, lineData);)
+    this.parseData(responseData, lineData);
     this.nextResponseID = this.getNextResponseID();
     this.nextLineID = this.getNextLineID();
     this.connections = {};

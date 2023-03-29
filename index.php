@@ -16,7 +16,7 @@
     <script src="arrow-line.min.js"></script>
     <script src="PropertyDialog.js"></script>
     <script src="Dialog.js"></script>
-    <script src="ResponseRenderer.js"></script>
+    <script src="Response.js"></script>
 
   </head>
   <body>
