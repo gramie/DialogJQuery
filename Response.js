@@ -23,6 +23,35 @@ class Response {
   clearLines() {
     this.lines.clear();
   }
+
+  addConnection(lineID, targetResponse) {
+    if (this.lines.has(lineID)) {
+      const line = this.lines.get(lineID);
+      if (line.connections.indexOf(targetResponse) < 0) {
+        line.connections.push(targetResponse);
+      } else {
+        console.log("Response" + this.id + ", Line " + lineID
+                    + "does not have a connection to " + targetResponse);
+      }
+    } else {
+      console.log("Response" + this.id + " does not have line with ID " + lineID);
+    }
+  }
+
+  removeConnection(lineID, targetResponse) {
+    if (this.lines.has(lineID)) {
+      const line = this.lines.get(lineID);
+      const targetIndex = line.connections.indexOf(targetResponse);
+      if (targetIndex >= 0) {
+        line.connections.splice(targetIndex, 1);
+      } else {
+        console.log("Response" + this.id + ", Line " + lineID
+                    + "does not have a connection to " + targetResponse);
+      }
+    } else {
+      console.log("Response" + this.id + " does not have line with ID " + lineID);
+    }    
+  }
 }
 
 class ResponseLine {
