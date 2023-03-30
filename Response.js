@@ -55,8 +55,6 @@ class Response {
 
     return result;
   }
-
-  }
 }
 
 class ResponseLine {

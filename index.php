@@ -9,10 +9,8 @@
             integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" 
             crossorigin="anonymous">
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
     <link rel="stylesheet" href="jquery-ui.min.css">
     <script src="jquery-ui.min.js"></script>
-    <link href="dialogjquery.css" rel="stylesheet">
     <script src="arrow-line.min.js"></script>
     <script src="PropertyDialog.js"></script>
     <script src="Dialog.js"></script>
@@ -71,7 +69,7 @@
       }
 
       $(function() {
-        propertyDlg = new propertyDialog(data, $('#property-editor'));
+        propertyDlg = new propertyDialog(responseData, lineData, $('#property-editor'));
         conv = new Conversation(data, propertyDlg);
         conv.setSelectedResponse(1);
         $('#overall-container').on('click', '.response, .connection-button', function(elem) { 

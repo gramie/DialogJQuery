@@ -21,7 +21,7 @@ const responseData = [
     }
   ];
 
-const lines = {
+const lineData = {
   1: {
     text: "Hello, may I help you?",
     audio_filename: "",
