@@ -10,6 +10,7 @@
             crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="jquery-ui.min.css">
+    <link rel="stylesheet" href="dialogjquery.css">
     <script src="jquery-ui.min.js"></script>
     <script src="arrow-line.min.js"></script>
     <script src="PropertyDialog.js"></script>
@@ -55,8 +56,11 @@
     <div id="response-picker">
       <div id="available-responses">
       </div>
-      <div id="add-new-response">
-        <button type="button" id="add-new-response">Add new Response</button>
+      <div>
+        <button type="button" 
+                id="add-new-response" 
+                class="response-picker-response"
+                data-lineid="">Add new Response</button>
       </div>
     </div>
     <script>
@@ -69,45 +73,61 @@
       }
 
       $(function() {
-        propertyDlg = new propertyDialog(responseData, lineData, $('#property-editor'));
-        conv = new Conversation(data, propertyDlg);
+        propertyDlg = new propertyDialog($('#property-editor'));
+        conv = new Conversation(responseData, lineData, propertyDlg);
         conv.setSelectedResponse(1);
-        $('#overall-container').on('click', '.response, .connection-button', function(elem) { 
+        
+        // Click on a Response
+        $('#overall-container').on('click', '.response', function(elem) { 
           const newResponseID = $(this).data('responseid');
           conv.setSelectedResponse(newResponseID);
           render();
         });
-        
+
+        // Click on a "Go to Response" button
+        $('#overall-container').on('click', '.connection-button', function(elem) { 
+          const newResponseID = $(this).data('targetid');
+          conv.setSelectedResponse(newResponseID);
+          render();
+        });
+
+        // Change a property
         $('#property-editor').on('input', 'select, input', function() {
           propertyDlg.dirty = true;
           $(this).addClass('changed-property');
           render();
         });
 
+        // Click "Add Connection" button
         $('#property-editor').on('click', '.add-connection-button', function() {
-          const lineID = $(this).data('lineid');
-          const responseID = $(this).data('targetid');
-          const responses = propertyDlg.getResponsePickerContents(responseID, lineID);
+          const lineID = $(this).data('lineid')
+          const possibleResponses = conv.getAvailableResponses(lineID);
+          const responses = propertyDlg.getResponsePickerContents(lineID, possibleResponses);
           $('#available-responses').html(responses);
+          $('#add-new-response').data('lineid', lineID);
           $('#response-picker').dialog( { modal : true });
         });
 
+        // Click "Add Line" button
         $('#property-editor').on('click', '#add-line-button', function() {
-          conv.addLine(conv.selectedResponseID);
-        });
-
-        $('#property-editor').on('click', '.connection-button-delete', function() {
-          const button = $(this);
-          conv.deleteConnection(button.data('lineid'), button.data('responseid'));
+          conv.addLine();
           render();
         });
 
+        // Click "Delete Connection" button
+        $('#property-editor').on('click', '.connection-button-delete', function() {
+          const button = $(this);
+          conv.deleteConnection(button.data('lineid'), button.data('targetid'));
+          render();
+          conv.setSelectedResponse();
+        });
+
+        // Click a target Response from the Response picker
         $('#response-picker').on('click', '.response-picker-response', function() {
           const button = $(this);
           const lineID = button.data('lineid');
           const targetResponseID = button.data('responseid');
           conv.addConnection(lineID, targetResponseID);
-          conv.setSelectedResponse(targetResponseID);
           $('#response-picker').dialog('close');
           render();
         });

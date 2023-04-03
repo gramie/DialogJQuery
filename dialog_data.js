@@ -24,38 +24,38 @@ const responseData = [
 const lineData = {
   1: {
     text: "Hello, may I help you?",
-    audio_filename: "",
+    audioURL: "",
     translation: "Est-ce que je peux vous aider?",
     connections: [2]
   },
   2: {
     text: "Yes, what can I do for you?",
-    audio_filename: "",
+    audioURL: "",
     translation: "Je peux vous aider a quelque chose?",
     connections: [3]
   },
   3: {
     text: "This is good.",
-    audio_filename: "",
+    audioURL: "",
     translation: "C'est bon.",
     connections: []
   },
   4: {
     text: "I would like to open an account.",
-    audio_filename: "",
+    audioURL: "",
     translation: "Je voudrais ouvrir une compte.",
     connections: [4]
   },
   5: {
     text: "I am somewhere here.",
-    audio_filename: "",
+    audioURL: "",
     translation: "Je suis autre part.",
     connections: []
   },
   6: {
     text: "Here is the form to fill out.",
-    audio_filename: "",
+    audioURL: "",
     translation: "Voici la form a remplir.",
     connections: []
   }
-}        ;
+};

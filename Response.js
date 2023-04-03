@@ -11,7 +11,7 @@ class Response {
   }
 
   addLine(lineID, inputLine) {
-      this.lines.set(lineID, new ResponseLine(line.id, inputLine));
+      this.lines.set(lineID, new ResponseLine(lineID, inputLine));
   }
 
   removeLine(id) {
@@ -47,7 +47,7 @@ class Response {
                     + 'data-responseid="' + this.id + '">';
 
     result += '<div class="response-title">' + this.id + '</div>';
-    for (const line in Object.values(this.lines)) {
+    for (const [lineID, line] of this.lines) {
       result += line.render();
     }
 
@@ -59,7 +59,7 @@ class Response {
 
 class ResponseLine {
   constructor(id, lineData) {
-    this.id = lineData.id;
+    this.id = id;
     this.text = lineData.text;
     this.audioURL = lineData.audioURL;
     this.translation = lineData.translation;

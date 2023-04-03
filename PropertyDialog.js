@@ -1,32 +1,25 @@
 class propertyDialog {
-  constructor(data, dialogDOM) {
-    this.data = data;
+  constructor(dialogDOM) {
     this.dialog = dialogDOM;
     this.dirty = false;
   }
   
-  setSelectedResponse(responseID, setDirty = false) {
-    this.displayResponse(responseID);
+  setSelectedResponse(response, setDirty = false) {
+    this.displayResponse(response);
     if (setDirty) {
       this.dirty = true;
     }
   }
 
-  saveResponse(responseID) {
+  saveResponse(response) {
     if (!this.dirty) {
       return;
     }
-    const response = this.data[responseID];
-    this.data[responseID].lines.length = 0;
+    response.lines.clear();
     response.speaker = this.dialog.find('#input-speaker').val();
 
-    var props = Object.getOwnPropertyNames(response.lines);
-    for (var i = 0; i < props.length; i++) {
-      delete response.lines[i];
-    }
     for (const line of this.dialog.find('.line-properties')) {
       const lineContainer = $(line);
-      console.log(lineContainer);
       const lineID = lineContainer.data('lineid');
       const connections = [];
       lineContainer.find('.connection-button[data-targetid]').each(function() {      
@@ -34,28 +27,23 @@ class propertyDialog {
       });
       const newLine = {
         text: lineContainer.find('.line-text input').val(),
-        audio_filename: lineContainer.find('.line-audio input').val(),
+        audioURL: lineContainer.find('.line-audio input').val(),
         translation: lineContainer.find('.line-translation input').val(),
         connections: connections
       };
-      this.data[responseID].lines[lineID] = newLine;
+      response.lines.set(lineID, new ResponseLine(lineID, newLine));
     }
   }
   
-  displayResponse(selectedResponseID) {
-    const response = this.data[selectedResponseID];
-    this.dialog.find('#input-id').html(selectedResponseID);  
+  displayResponse(response) {
+    this.dialog.find('#input-id').html(response.id);  
     this.dialog.find('#input-speaker').val(response.speaker);
     let lineHTML = '';
-    for (const lineID of Object.keys(response.lines)) {
-      if (!parseInt(lineID)) {
-        continue;
-      }
-      const line = response.lines[lineID];
+    for (const [lineID, line] of response.lines) {
       
-      lineHTML += '<div class="line-properties" data-lineid="' + lineID + '">' + this.getLineHTML(selectedResponseID, lineID, line) + '</div>';
+      lineHTML += '<div class="line-properties" data-lineid="' + lineID + '">' + this.getLineHTML(response.id, lineID, line) + '</div>';
     }
-    lineHTML += '<div class="add-line"><button type="button" id="add-line-button">Add line</div>';
+    lineHTML += '<div class="add-line"><button type="button" id="add-line-button" data-responseid="' + response.id + '">Add line</div>';
     this.dialog.find('#input-lines').html(lineHTML);
     
     this.dialog.find('input, select').removeClass('changed-property');
@@ -69,7 +57,7 @@ class propertyDialog {
             + '</div>';
     result += '<div class="label">Audio URL</div>'
             + '<div class="line-audio">'
-            + '<input type="text" value="' + line.audio_filename + '" />'
+            + '<input type="text" value="' + line.audioURL + '" />'
             + '</div>';
     result += '<div class="label">Translation</div>'
             + '<div class="line-translation">'
@@ -83,31 +71,27 @@ class propertyDialog {
               + '<button type="button" '
               + 'class="connection-button-delete" '
                + 'data-lineid="' + lineID + '" '
-              + 'data-responseid="' + targetResponse + '">'
+              + 'data-targetid="' + targetResponse + '">'
               + 'x</button></div>';
     }
     result += '</div>';
     result += '<button type="button" class="add-connection-button" '
-               + 'data-lineid="' + lineID + '" '
-               + 'data-targetid="' + currentResponseID + '">+</button>';
+               + 'data-lineid="' + lineID + '">+</button>';
 
     return result;
   }
 
-  getResponsePickerContents(currentResponseID, lineID) {
+  getResponsePickerContents(lineID, availableResponses) {
     let result = '';
-    const existingConnectionIDs = Object.values(this.data[currentResponseID].lines[lineID].connections);
-    existingConnectionIDs.push(currentResponseID);
-    
-    for (const response of Object.values(this.data)) {
-      if (existingConnectionIDs.indexOf(parseInt(response.id)) == -1) {
-        const firstLine = Object.values(response.lines).shift();
-        result += '<div><button class="response-picker-response" '
-                     + 'data-lineid="' + lineID + '" '
-                     + 'data-responseid="' + response.id + '">'
-                     + response.id + ': ' + firstLine.text 
-                     + '</button></div>';
-      }
+    for (const response of availableResponses) {
+      const lines = response.lines;
+      
+      const firstLine = lines.values().next().value;
+      result += '<div><button class="response-picker-response" '
+                   + 'data-lineid="' + lineID + '" '
+                   + 'data-responseid="' + response.id + '">'
+                   + response.id + ': ' + firstLine.text 
+                   + '</button></div>';
     }
     
     result += '</div>';
