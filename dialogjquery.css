@@ -89,6 +89,15 @@
   text-align: center;
 }
 
+#property-editor #input-id {
+  float: left;
+}
+
+#property-editor #delete-response {
+  float: right;
+  color: red;
+}
+
 #response-picker {
   display: none;
 }

@@ -36,7 +36,8 @@ class propertyDialog {
   }
   
   displayResponse(response) {
-    this.dialog.find('#input-id').html(response.id);  
+    this.dialog.find('#input-id').html(response.id);
+    this.dialog.find('#delete-response').data('data-deleteresponseid', response.id);
     this.dialog.find('#input-speaker').val(response.speaker);
     let lineHTML = '';
     for (const [lineID, line] of response.lines) {

@@ -31,7 +31,10 @@
         <div class="body">
           <div class="row">
             <label for="input-id" class="">ID</label>
-            <div class="" id="input-id"></div>
+            <div>
+              <div id="input-id"></div>
+              <button type="button" id="delete-response" data-deleteresponseid="">x</button>
+            </div>
           </div>
           <div class="row">
             <label for="input-speaker" class="">Speaker</label>
@@ -132,6 +135,12 @@
           render();
         });
 
+        $('#property-editor').on('click', '#delete-response', function() {
+          console.log("deleting");
+          conv.deleteCurrentResponse();
+          conv.setSelectedResponse(1);
+          render();
+        });
         render();
 });
       </script>

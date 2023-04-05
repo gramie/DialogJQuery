@@ -97,20 +97,22 @@ class Conversation {
   }
 
   addConnection(fromLineID, toResponseID = null) {
+    const currentSpeaker = this.data[this.selectedResponseID].speaker;
     const line = this.findLine(fromLineID);
 
-    let responseID;
+    let response;
+    
     if (toResponseID) {
-      responseID = parseInt(toResponseID);
+      response = this.data[toResponseID];
     } else {
-      const newResponse = new Response(this.getNextResponseID(), 'computer', [], this.lineData);
-      this.data[newResponse.id] = newResponse;
-      responseID = parseInt(newResponse.id);
+      const newSpeaker = currentSpeaker === 'computer' ? 'user' : 'computer';
+      response = new Response(this.getNextResponseID(), newSpeaker, [], this.lineData);
+      this.data[response.id] = response;
     }
 
-    line.connections.push(responseID);
-    this.setSelectedResponse(responseID);
-    return responseID;
+    line.connections.push(response.id);
+    this.dialog.displayResponse(response);
+    return toResponseID;
   }
 
   findLine(lineID) {
@@ -177,9 +179,9 @@ class Conversation {
         }
       } else {
         // we are looking for any lines
-        if (Object.keys(response.lines).length > 0) { 
-          for (const lineID of Object.keys(response.lines))
-            linesFound[lineID] = response.lines[lineID];
+        if (response.lines.size > 0) { 
+          for (const [lineID, line] of response.lines)
+            linesFound[lineID] = line;
         }
       }
     }
@@ -215,8 +217,18 @@ class Conversation {
         if (targetIndex > -1) {
           line.connections.splice(targetIndex, 1);
         }
+        this.dialog.displayResponse(response);
         break;
       }
     }
+  }
+
+  deleteCurrentResponse() {
+    const connectionsToDelete = this.getConnections(null, this.selectedResponseID);
+    for (const lineID of Object.keys(connectionsToDelete)) {
+      this.deleteConnection(lineID, this.selectedResponseID);
+    }
+
+    delete this.data[this.selectedResponseID];
   }
 }
